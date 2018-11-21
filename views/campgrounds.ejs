@@ -1,0 +1,15 @@
+<% include ./partials/header.ejs %>
+<div class="container">
+    <div class="row text-center" style="display:flex; flex-wrap:wrap;">
+                <% campgrounds.forEach(function(cmp){  %>
+                <div class="col-lg-4 col-md-3 col-sm-6">
+                        <img class="img-thumbnail" src='<%= cmp.image %>' style='hight:200px!primary;'>                    
+                        <div class="caption">
+                            <h4><%= cmp.name %></h4>
+                        </div>
+                </div>
+                <% }) %>
+
+    </div>
+</div>
+<% include ./partials/footer.ejs %>
