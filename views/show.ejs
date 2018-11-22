@@ -8,5 +8,12 @@
         <h3><%= campground.description %></h3>
     </p>
 </div>
+<div>
+    <p>
+        <% campground.comments.forEach(function(comment){  %>
+            <h5>Author: <%= comment.author %> - Text: <%= comment.text %></h5>
+        <% }) %>
+    </p>
+</div>
 
 <% include ./partials/footer.ejs %>
