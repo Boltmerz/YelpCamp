@@ -1,26 +1,38 @@
-var express=require("express")
-var bodyParser=require("body-parser")
-var ejs=require("ejs")
-var app = express()
+var express     = require("express"),
+    bodyParser  = require("body-parser"),
+    ejs         = require("ejs"),
+    app         = express(),
+    mongoose    = require("mongoose");
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine","ejs")
+mongoose.connect("mongodb://localhost/yelp_camp",{ useNewUrlParser: true });
 
-var campgrounds =
-    [
-        {name:"SITE 1",image:"http://images.pexels.com/photos/1066801/pexels-photo-1066801.jpeg"},
-        {name:"SITE 2",image:"https://images.pexels.com/photos/1601513/pexels-photo-1601513.jpeg"},
-        {name:"SITE 3",image:"https://pixabay.com/get/e834b5062cf4033ed1584d05fb1d4e97e07ee3d21cac104491f2c771aee9b0b1_340.jpg"},
-        {name:"SITE 4",image:"https://images.pexels.com/photos/1048039/pexels-photo-1048039.jpeg"},
-        {name:"SITE 5",image:"https://images.pexels.com/photos/959252/dramatic-clouds-sky-drama-959252.jpeg"},
-    ];
+//Schema
+var campgroundSchema = new mongoose.Schema({
+   name: String,
+   image: String,
+   description: String
+});
+var Campground = mongoose.model("Campground", campgroundSchema);
+
 
 //INDEX
 app.get("/", function (req, res) {
     res.render("landing");
 });
-//campgrounds
+//Get ALL campgrounds
 app.get("/campgrounds", function (req, res) {
-    res.render("campgrounds", {campgrounds: campgrounds});
+    //res.render("campgrounds", {campgrounds: campgrounds});
+    Campground.find({}, function (err,allCampgrounds){
+        if(err)
+        {
+            console.log(err);
+        }
+        else {
+            res.render("campgrounds", {campgrounds: allCampgrounds});    
+        }
+    });
 });
 //Get the page to add new campground
 app.get("/campgrounds/new", function (req, res) {
@@ -28,8 +40,29 @@ app.get("/campgrounds/new", function (req, res) {
 });
 //POST new campground
 app.post("/campgrounds", function(req, res){
-    campgrounds.push({name:req.body.campName,image:req.body.imageUrl});
-    res.render("campgrounds", {campgrounds: campgrounds});
+    Campground.create(
+        {name:req.body.campName,image:req.body.imageUrl,description:req.body.description},
+        function(err,campground){
+            if(err){
+                console.log(err);
+            }else{
+                console.log("Inserted new camp: "+req.body.campName);
+            }
+        }
+    )
+    res.redirect("/campgrounds");
+});
+//GET SHOW
+app.get("/campgrounds/:id", function (req, res) {
+     Campground.findById({_id:req.params.id}, function (err,campground){
+        if(err)
+        {
+            console.log(err);
+        }
+        else {
+            res.render("show", {campground: campground});    
+        }
+    });
 });
 app.listen(process.env.PORT,process.env.IP,function(){
    console.log("Server started!") ;
