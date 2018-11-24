@@ -9,7 +9,9 @@ var express     = require("express"),
 // SEEDING
 SeedDB();
 //Configure Server attributtes
+
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname+"/public"));
 app.set("view engine","ejs")
 
 mongoose.connect("mongodb://localhost/yelp_camp",{ useNewUrlParser: true });
