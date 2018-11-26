@@ -10,7 +10,7 @@ var express     = require("express"),
     Campground  = require("./models/campground"),
     Comment  = require("./models/comment");
 // SEEDING
-SeedDB();
+// SeedDB();
 //ROUTES
 var commentRoutes = require("./routes/comments"),
  campgroundRoutes = require("./routes/campgrounds"),
