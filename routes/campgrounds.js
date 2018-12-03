@@ -21,7 +21,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     // get data from form and add to campgrounds array
     var name = req.body.name;
     var price = req.body.price;
-    var image = req.body.imageUrl;
+    var image = req.body.image;
     var desc = req.body.description;
     var author = {
         id: req.user._id,
@@ -34,7 +34,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
             console.log(err);
         } else {
             //redirect back to campgrounds page
-            console.log(newlyCreated);
+            console.log("Added campground: "+newlyCreated.name);
             res.redirect("/campgrounds");
         }
     });
@@ -52,7 +52,7 @@ router.get("/:id", function(req, res){
         if(err || !foundCampground){
             console.log(err);
         } else {
-            console.log(foundCampground)
+            console.log("Showing "+foundCampground.name);
             //render show template with that campground
             res.render("campgrounds/show", {campground: foundCampground});
         }

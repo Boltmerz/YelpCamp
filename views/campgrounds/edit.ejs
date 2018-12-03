@@ -5,19 +5,19 @@
             <h2>Update camp</h2>
             <div class="form-group">
                 <label for="campName">Camp Name</label>
-                <input type="text" class="form-control" name="campName" id="campName" value="<%= campground.name %>">
+                <input type="text" class="form-control" name="campground[name]" value="<%= campground.name %>">
             </div>
             <div class="form-group">
                 <label>Price</label>
-                <input type="number" class="form-control" name="price" step="0.5" min="1.0">
+                <input type="number" class="form-control" name="campground[price]" step="0.5" min="1.0" value="<%= campground.price %>">
             </div>
             <div class="form-group">
                 <label for="imageUrl">Image URL</label>
-                <input type="text" class="form-control" name="imageUrl" id="imageUrl" value="<%= campground.image %>">
+                <input type="text" class="form-control" name="campground[image]" value="<%= campground.image %>">
             </div>
             <div class="form-group">
                 <label for="description">Camp description</label>
-                <TextArea  class="form-control" name="description" id="description" placeholder="Enter camp description"><%= campground.description %></TextArea>
+                <TextArea  class="form-control" name="campground[description]" placeholder="Enter camp description"><%= campground.description %></TextArea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>

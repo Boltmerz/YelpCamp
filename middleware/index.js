@@ -12,13 +12,17 @@ middleObj.isLoggedIn = function(req,res,next){
 };
 middleObj.checkCampgroundOwnership = function(req,res,next){
     if(req.isAuthenticated()){
-        Campground.findById(req.params.id).populate("comments").exec(function(err,campground){
+        Campground.findById(req.params.id).populate("comments").exec(function(err,foundCampground){
         if(err || !foundCampground){
            console.log(err);
            req.flash("error","Unable to get campground: "+err);
            res.redirect("back");
         } else {
-           if(campground.author.id.equals(req.user._id)){
+            if (!foundCampground) {
+                    req.flash("error", "Item not found.");
+                    return res.redirect("back");
+                }
+           if(foundCampground.author.id.equals(req.user._id)){
                 next();
             } else{
                 req.flash("error","You don't have permision!!!");
@@ -40,6 +44,10 @@ middleObj.checkCommentOwnership = function(req,res,next){
            console.log(err);
            res.redirect("back");
         } else {
+            if (!foundComment) {
+                    req.flash("error", "Item not found.");
+                    return res.redirect("back");
+                }
            if(foundComment.author.id.equals(req.user._id)){
                 next();
             } else{
