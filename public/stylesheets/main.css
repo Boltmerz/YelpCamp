@@ -5,6 +5,9 @@
 .img-thumbnail {
     padding: 0;
 }
+body{
+    padding-top: 10px;
+}
 
 .img-thumbnail .caption-full {
     padding: 9px;

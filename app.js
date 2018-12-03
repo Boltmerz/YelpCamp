@@ -8,6 +8,7 @@ var express     = require("express"),
     methodOverride    = require("method-override"),
     SeedDB      = require("./seeds"),
     User        = require("./models/user"),
+    flash       = require("connect-flash"),
     Campground  = require("./models/campground"),
     Comment  = require("./models/comment");
 // SEEDING
@@ -15,7 +16,7 @@ var express     = require("express"),
 //ROUTES
 var commentRoutes = require("./routes/comments"),
  campgroundRoutes = require("./routes/campgrounds"),
- authRoutes = require("./routes/auth");
+ authRoutes = require("./routes/index");
 
 //Configure Server attributtes
 app.use(bodyParser.urlencoded({extended: true}));
@@ -23,6 +24,7 @@ app.use(express.static(__dirname+"/public"));
 app.set("view engine","ejs")
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 mongoose.connect("mongodb://localhost/yelp_camp",{ useNewUrlParser: true });
 //PASSPORT CONFIGURATIONS
@@ -39,6 +41,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(function(req,res,next){
   res.locals.currentUser = req.user; 
+  res.locals.error = req.flash("error"); 
+  res.locals.success = req.flash("success"); 
   next();
 });
 app.use(authRoutes);
